@@ -30,9 +30,15 @@ function ShoppingOrders() {
     dispatch(getAllOrdersByUserId(user?.id))
   },[dispatch]);
 
+  function handleGetOrderDetails(getId){
+    dispatch(getOrderDetails(getId))
+  }
   useEffect(()=>{
-    
-  })
+    if(orderDetails !== null){
+      setOpenDetailsDialog(true)
+    }
+  },[orderDetails])
+  console.log(orderList);
   return (
     <Card>
       <CardHeader>
@@ -56,24 +62,26 @@ function ShoppingOrders() {
               ? orderList.map((orderItem) => (
                   <TableRow>
                     <TableCell>{orderItem?._id}</TableCell>
-                    <TableCell>{orderItem?.orderDate.split('T')[0]}</TableCell>
+                    <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
                     <TableCell>
-                      <Badge className={` py-1 px-3 ${orderItem?.orderStatus === 'confirmed' ? "bg-green-500" : "bg-black-500"}`}>
+                      <Badge className={` py-1 px-3 ${orderItem?.orderStatus === 'confirmed' ? "bg-green-500" : "bg-black"}`}>
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>₹{orderItem?.totalAmount}</TableCell>
+                    <TableCell>${orderItem?.totalAmount}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}
-                        onOpenChange={() => {
-                          setOpenDetailsDialog(false);
-                          dispatch(resetOrderDetails());
-                        }}
+                        onOpenChange={
+                          ()=>{
+                            setOpenDetailsDialog(false)
+                            dispatch(resetOrderDetails());
+                          }
+                        }
                       >
                         <Button
                           onClick={() =>
-                            handleFetchOrderDetails(orderItem?._id)
+                            handleGetOrderDetails(orderItem?._id)
                           }
                         >
                           View Details
