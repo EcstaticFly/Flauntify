@@ -16,9 +16,9 @@ function AdminDashboard() {
   function handleUploadFeatureImage() {
     dispatch(addFeatureImage(uploadedImageUrl)).then((data) => {
       if (data?.payload?.success) {
-        dispatch(getFeatureImages());
         setImageFile(null);
         setUploadedImageUrl("");
+        dispatch(getFeatureImages());
       }
     });
   }
@@ -41,8 +41,8 @@ function AdminDashboard() {
         isCustomStyling={true}
         // isEditMode={currentEditedId !== null}
       />
-      <Button onClick={handleUploadFeatureImage} className="mt-5 w-full">
-        Upload
+      <Button disabled={uploadedImageUrl ? false : true} onClick={handleUploadFeatureImage} className={`mt-5 w-full ${uploadedImageUrl? '' : 'cursor-not-allowed'}`}>
+       Upload
       </Button>
       <div className="flex flex-col gap-4 mt-5">
         {featureImageList && featureImageList.length > 0
