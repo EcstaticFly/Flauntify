@@ -21,22 +21,24 @@ import { Badge } from "../ui/badge";
 
 function AdminOrdersView() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
+  const {orderDetails, orderList} = useSelector(state=> state.adminOrder);
+  
   const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(getAllOrdersForAdmin());;
+  },[dispatch])
 
-  function handleFetchOrderDetails(getId) {
-    dispatch(getOrderDetailsForAdmin(getId));
+  function handleFetchOrderDetails(giverId){
+    dispatch(getOrderDetailsForAdmin(giverId));
   }
 
-  useEffect(() => {
-    dispatch(getAllOrdersForAdmin());
-  }, [dispatch]);
+  useEffect(()=>{
+    if(orderDetails!==null) setOpenDetailsDialog(true);
+  },[orderDetails])
 
-  console.log(orderDetails, "orderList");
 
-  useEffect(() => {
-    if (orderDetails !== null) setOpenDetailsDialog(true);
-  }, [orderDetails]);
+
+
 
   return (
     <Card>

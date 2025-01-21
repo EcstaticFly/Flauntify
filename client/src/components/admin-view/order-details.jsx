@@ -21,17 +21,18 @@ function AdminOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  console.log(orderDetails, "orderDetailsorderDetails");
+  console.log(orderDetails, "orderDetails");
 
   function handleUpdateStatus(event) {
     event.preventDefault();
+    console.log(formData, "formData");
     const { status } = formData;
-
     dispatch(
       updateOrderStatus({ id: orderDetails?._id, orderStatus: status })
     ).then((data) => {
+      console.log(data, "data");
       if (data?.payload?.success) {
-        dispatch(getOrderDetailsForAdmin(orderDetails?._id));
+        dispatch(getOrderDetailsForAdmin(orderDetails._id));
         dispatch(getAllOrdersForAdmin());
         setFormData(initialFormData);
         toast.success(data?.payload?.message);
