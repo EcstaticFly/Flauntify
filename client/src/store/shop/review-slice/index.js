@@ -1,30 +1,31 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
   isLoading: false,
-  reviews: [],
+  reviews: []
 };
 
-export const addReview = createAsyncThunk(
-  "/order/addReview",
-  async (formdata) => {
-    const response = await axios.post(
-      `http://localhost:5000/api/shop/review/add`,
-      formdata
+export const getReviews = createAsyncThunk(
+  "/order/getReviews",
+  async (id) => {
+    const response = await axios.get(
+      `http://localhost:5000/api/shop/review/${id}`
     );
 
     return response.data;
   }
 );
+export const addReview = createAsyncThunk(
+  "/order/addReview",
+  async (formData) => {
+    const response = await axios.post(
+      'http://localhost:5000/api/shop/review/add',formData
+    );
 
-export const getReviews = createAsyncThunk("/order/getReviews", async (id) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/shop/review/${id}`
-  );
-
-  return response.data;
-});
+    return response.data;
+  }
+);
 
 const reviewSlice = createSlice({
   name: "reviewSlice",
@@ -42,8 +43,7 @@ const reviewSlice = createSlice({
       .addCase(getReviews.rejected, (state) => {
         state.isLoading = false;
         state.reviews = [];
-      });
+      })
   },
 });
-
 export default reviewSlice.reducer;

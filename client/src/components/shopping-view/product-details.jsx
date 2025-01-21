@@ -14,17 +14,15 @@ import { addReview, getReviews } from "@/store/shop/review-slice";
 import { useToast } from "../ui/use-toast";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
-  const [reviewMsg, setReviewMsg] = useState("");
+  const [reviewMsg,setReviewMsg] = useState('');
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const {user}= useSelector(state=> state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
-  const { reviews } = useSelector((state) => state.shopReview);
+  const {reviews} = useSelector(state=> state.shopReview);
   const {toast} = useToast();
 
   function handleRatingChange(getRating) {
-    console.log(getRating, "getRating");
-
     setRating(getRating);
   }
   
@@ -65,31 +63,25 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setRating(0);
     setReviewMsg("");
   }
-  function handleAddReview() {
-    dispatch(
-      addReview({
-        productId: productDetails?._id,
-        userId: user?.id,
-        userName: user?.userName,
-        reviewMessage: reviewMsg,
-        reviewValue: rating,
-      })
-    ).then((data) => {
-      if (data.payload.success) {
+  function handleAddReview(){
+    dispatch(addReview({ productId : productDetails?._id, userId : user?.id, userName: user?.userName, reviewMessage : reviewMsg , reviewValue : rating }))
+    .then((data)=>{
+      console.log(data);
+      if(data?.payload?.success){
         setRating(0);
-        setReviewMsg("");
-        dispatch(getReviews(productDetails?._id));
+        setReviewMsg('');
+        dispatch(getReviews(productDetails?._id))
         toast({
-          title: "Review added successfully!",
-        });
+          title: data?.payload?.message
+        })
       }
-    });
-  }  
-  useEffect(() => {
-    if (productDetails !== null) dispatch(getReviews(productDetails?._id));
-  }, [productDetails]);
-
-  console.log(reviews, "reviews");
+    })
+  } 
+  useEffect(()=>{
+    if(productDetails!==null){
+      dispatch(getReviews(productDetails?._id));
+    }
+  },[productDetails])
 
   const averageReview =
     reviews && reviews.length > 0
@@ -177,7 +169,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                         <StarRatingComponent rating={reviewItem?.reviewValue} />
                       </div>
                       <p className="text-muted-foreground">
-                        {reviewItem.reviewMessage}
+                        {reviewItem?.reviewMessage}
                       </p>
                     </div>
                   </div>
