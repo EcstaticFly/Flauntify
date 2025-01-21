@@ -2,13 +2,6 @@ const Order = require("../../models/Order");
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
 const paypal = require('../../helpers/paypal')
-const Razorpay = require("razorpay");
-const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
-// const razorpayInstance = new Razorpay({
-//   key_id: process.env.RAZORPAY_ID_KEY,
-//   key_secret: process.env.RAZORPAY_SECRET_KEY
-// });
 
 const createOrder = async (req, res) => {
   try {
@@ -103,6 +96,16 @@ const capturePayment = async (req, res) => {
     order.orderStatus = 'confirmed';
     order.payerId = payerId;
     order.paymentId = paymentId;
+
+
+    for(let item of order.cartItems){
+      let currentProduct = await Product.findById(item.productId);
+      if(!currentProduct){
+        return res.status(404).json({success: false, message: `Not enough stocks for ${currentProduct.title}`});
+      }
+      currentProduct.totalStock = currentProduct.totalStock - item.quantity;
+      await currentProduct.save();
+    }
 
     const currentCartId = order.cartId;
     await Cart.findByIdAndDelete(currentCartId);

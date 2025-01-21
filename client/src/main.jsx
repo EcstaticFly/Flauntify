@@ -5,13 +5,19 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "./components/ui/toaster.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
-      <ToastContainer autoClose={3000} hideProgressBar={true}
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={true}
+        position="bottom-right"
+        theme="dark"
       />
+      <Toaster/>
     </Provider>
   </BrowserRouter>
 );
