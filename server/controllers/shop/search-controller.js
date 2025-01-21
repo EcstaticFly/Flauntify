@@ -1,18 +1,15 @@
-const Product = require("../../models/Product");
+const Product = require('../../models/Product')
 
-const searchProducts = async (req, res) => {
-  try {
-    const { keyword } = req.params;
-    if (!keyword || typeof keyword !== "string") {
-      return res.status(400).json({
-        succes: false,
-        message: "Keyword is required and must be in string format",
-      });
+const searchProducts = async(req,res)=>{
+  try{
+    const {searchTerm} = req.params;
+    console.log(searchTerm)
+
+    if(!searchTerm || typeof searchTerm !=="string"){
+      return res.status(400).json({success: false,message:'Invalid search term'})
     }
-
-    const regEx = new RegExp(keyword, "i");
-
-    const createSearchQuery = {
+    const regEx = new RegExp(searchTerm, 'i');
+    const searchQuery = {
       $or: [
         { title: regEx },
         { description: regEx },
@@ -21,19 +18,18 @@ const searchProducts = async (req, res) => {
       ],
     };
 
-    const searchResults = await Product.find(createSearchQuery);
-
+    const searchResults = await Product.find(searchQuery);
     res.status(200).json({
       success: true,
-      data: searchResults,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Error",
-    });
-  }
-};
+      data: searchResults
+    })
 
-module.exports = { searchProducts };
+
+
+  }catch(error){
+    console.log(error.message);
+    res.status(400).json({ success: false, message: "An error occurred!" });
+  }
+}
+
+module.exports = {searchProducts}
