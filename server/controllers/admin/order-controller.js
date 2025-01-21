@@ -2,9 +2,8 @@ const Order = require("../../models/Order");
 
 const getAllOrdersOfAllUsers = async (req, res) => {
   try {
-    const orders = await Order.find({});
-
-    if (!orders.length) {
+    const allOrders = await Order.find({});
+    if (!allOrders) {
       return res.status(404).json({
         success: false,
         message: "No orders found!",
@@ -13,40 +12,31 @@ const getAllOrdersOfAllUsers = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: orders,
+      data: allOrders,
     });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({
-      success: false,
-      message: "Some error occured!",
-    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
 
-const getOrderDetailsForAdmin = async (req, res) => {
+const getOrderDetailsforAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const order = await Order.findById(id);
-
-    if (!order) {
+    const currentOrder = await Order.findById(id);
+    if (!currentOrder) {
       return res.status(404).json({
         success: false,
-        message: "Order not found!",
+        message: "Order not found",
       });
     }
-
     res.status(200).json({
       success: true,
-      data: order,
+      data: currentOrder,
     });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({
-      success: false,
-      message: "Some error occured!",
-    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
 
@@ -54,33 +44,29 @@ const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { orderStatus } = req.body;
-
-    const order = await Order.findById(id);
-
-    if (!order) {
+    const currentOrder = await Order.findById(id);
+    if (!currentOrder) {
       return res.status(404).json({
         success: false,
-        message: "Order not found!",
+        message: "Order not found",
       });
     }
 
-    await Order.findByIdAndUpdate(id, { orderStatus });
-
+    await Order.findByIdAndUpdate(id, {
+      orderStatus,
+    });
     res.status(200).json({
       success: true,
-      message: "Order status is updated successfully!",
+      message: "Order status updated successfully!",
     });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({
-      success: false,
-      message: "Some error occured!",
-    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
 
 module.exports = {
   getAllOrdersOfAllUsers,
-  getOrderDetailsForAdmin,
+  getOrderDetailsforAdmin,
   updateOrderStatus,
 };
