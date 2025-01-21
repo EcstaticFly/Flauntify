@@ -11,7 +11,7 @@ import { Label } from "../ui/label";
 import StarRatingComponent from "../common/star-rating";
 import { useEffect, useState } from "react";
 import { addReview, getReviews } from "@/store/shop/review-slice";
-import { toast } from "react-toastify";
+import { useToast } from "../ui/use-toast";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
@@ -20,25 +20,25 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   const { reviews } = useSelector((state) => state.shopReview);
+  const {toast} = useToast();
 
   function handleRatingChange(getRating) {
     console.log(getRating, "getRating");
 
     setRating(getRating);
   }
-
+  
   function handleAddToCart(getCurrentProductId, getTotalStock) {
     let getCartItems = cartItems.items || [];
-
-    if (getCartItems.length) {
-      const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
-      );
-      if (indexOfCurrentItem > -1) {
-        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if (getQuantity + 1 > getTotalStock) {
-          toast.error(`Only ${getQuantity} quantity can be added for this item`)
-
+    if(getCartItems.length){
+      const indexOfCurrentItem = getCartItems.findIndex(item=>item.productId === getCurrentProductId)
+      if(indexOfCurrentItem !== -1){
+        const currentQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if((currentQuantity+1)>getTotalStock){
+          toast({
+            title: `Only ${currentQuantity} items are available in stock`,
+            variant : 'destructive'
+          })
           return;
         }
       }
@@ -52,7 +52,9 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
-        toast.success("Product is added to cart")
+        toast({
+          title: `Product added to cart successfully`,
+        })
       }
     });
   }
@@ -63,7 +65,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setRating(0);
     setReviewMsg("");
   }
-
   function handleAddReview() {
     dispatch(
       addReview({
@@ -78,11 +79,12 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         setRating(0);
         setReviewMsg("");
         dispatch(getReviews(productDetails?._id));
-        toast.success("Review added successfully!")
+        toast({
+          title: "Review added successfully!",
+        });
       }
     });
-  }
-
+  }  
   useEffect(() => {
     if (productDetails !== null) dispatch(getReviews(productDetails?._id));
   }, [productDetails]);
@@ -138,7 +140,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           </div>
           <div className="mt-5 mb-5">
             {productDetails?.totalStock === 0 ? (
-              <Button className="w-full opacity-60 cursor-not-allowed">
+              <Button className="w-full opacity-65 cursor-not-allowed">
                 Out of Stock
               </Button>
             ) : (
