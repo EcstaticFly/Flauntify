@@ -1,9 +1,10 @@
-const express = require("express");
-
-const { searchProducts } = require("../../controllers/shop/search-controller");
+const express = require('express');
+const {
+  searchProducts
+} = require("../../controllers/shop/search-controller");
 
 const router = express.Router();
 
-router.get("/:keyword", searchProducts);
+router.get('/:searchTerm', searchProducts);
 
 module.exports = router;

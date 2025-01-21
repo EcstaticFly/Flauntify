@@ -33,7 +33,10 @@ function MenuItems() {
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
     const currentFilter = 
-      getCurrentMenuItem.id!=='home' && getCurrentMenuItem.id!== 'products'
+      getCurrentMenuItem.id!=='home' && getCurrentMenuItem.id!== 'products' && getCurrentMenuItem!=='search'
+      ? {
+        category : [getCurrentMenuItem.id]
+      }:null
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
     location.pathname.includes('listing') && currentFilter!==null
     ? setSearchParams(new URLSearchParams(`?category=${getCurrentMenuItem.id}`))
@@ -141,7 +144,7 @@ function ShoppingHeader() {
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-full max-w-xs">
+          <SheetContent side="left" className="w-full max-w-xs">
             <MenuItems />
             <HeaderRightContent />
           </SheetContent>

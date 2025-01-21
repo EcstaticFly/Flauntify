@@ -8,9 +8,9 @@ const initialState = {
 
 export const getSearchResults = createAsyncThunk(
   "/order/getSearchResults",
-  async (keyword) => {
+  async (searchTerm) => {
     const response = await axios.get(
-      `http://localhost:5000/api/shop/search/${keyword}`
+      `http://localhost:5000/api/shop/search/${searchTerm}`
     );
 
     return response.data;
@@ -40,7 +40,5 @@ const searchSlice = createSlice({
       });
   },
 });
-
 export const { resetSearchResults } = searchSlice.actions;
-
 export default searchSlice.reducer;
