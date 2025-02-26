@@ -16,16 +16,18 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function AdminHeader({ setOpen }) {
   const dispatch = useDispatch();
-
-  const [openDialog,setOpenDialog] = useState(false);
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
 
   function handleLogout() {
-    dispatch(logoutUser()).then((data) => {
-      toast.success("Logged out successfull")
-    });
+    dispatch(resetTokenAndCredentials());
+    sessionStorage.clear();
+    navigate("/auth/login");
+    toast.success("Logged out Successfully!");
   }
 
   return (
@@ -37,24 +39,29 @@ function AdminHeader({ setOpen }) {
       <div className="flex flex-1 justify-end">
         <AlertDialog open={openDialog}>
           <AlertDialogTrigger>
-          <Button
-          onClick={()=>setOpenDialog(true)}
-          className="inline-flex gap-2 items-center rounded-md px-4 py-2 text-sm font-medium shadow"
-        > 
-          <LogOut />
-          Logout
-        </Button>
+            <Button
+              onClick={() => setOpenDialog(true)}
+              className="inline-flex gap-2 items-center rounded-md px-4 py-2 text-sm font-medium shadow"
+            >
+              <LogOut />
+              Logout
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Confirm Logout.
-              </AlertDialogDescription>
+              <AlertDialogDescription>Confirm Logout.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={()=>setOpenDialog(false)}>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="bg-destructive" onClick={handleLogout}>Logout</AlertDialogAction>
+              <AlertDialogCancel onClick={() => setOpenDialog(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive"
+                onClick={handleLogout}
+              >
+                Logout
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
