@@ -15,7 +15,7 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 const connectDB = require("./helpers/mongodb");
-dotenv.config({ path: "./.env" });
+dotenv.config();
 connectDB();
 
 const app = express();
