@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 const searchProducts = async (req, res) => {
   try {
     const { searchTerm } = req.params;
-    console.log(searchTerm);
+    // console.log(searchTerm);
 
     if (!searchTerm || typeof searchTerm !== "string") {
       return res

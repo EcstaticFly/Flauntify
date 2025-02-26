@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
         userName: checkUser.userName,
       },
       process.env.CLIENT_ACCESS_SECRET,
-      { expiresIn: process.env.TOKEN_EXPIRY }
+      { expiresIn: "60m" }
     );
 
     res.cookie("token", token, { httpOnly: true, secure: false }).json({

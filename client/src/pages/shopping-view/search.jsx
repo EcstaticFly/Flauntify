@@ -60,7 +60,7 @@ function SearchProducts(){
   }
 
   useEffect(()=>{
-    if(searchTerm && searchTerm.trim()!=='' && searchTerm.trim().length>3){
+    if(searchTerm && searchTerm.trim()!=='' && searchTerm.trim().length>=2){
       setTimeout(()=>{
         setSearchParams(new URLSearchParams(`?searchTerm=${searchTerm}`));
         dispatch(getSearchResults(searchTerm))

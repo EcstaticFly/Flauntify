@@ -14,29 +14,31 @@ import { addReview, getReviews } from "@/store/shop/review-slice";
 import { useToast } from "../ui/use-toast";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
-  const [reviewMsg,setReviewMsg] = useState('');
+  const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
-  const {user}= useSelector(state=> state.auth);
+  const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
-  const {reviews} = useSelector(state=> state.shopReview);
-  const {toast} = useToast();
+  const { reviews } = useSelector((state) => state.shopReview);
+  const { toast } = useToast();
 
   function handleRatingChange(getRating) {
     setRating(getRating);
   }
-  
+
   function handleAddToCart(getCurrentProductId, getTotalStock) {
     let getCartItems = cartItems.items || [];
-    if(getCartItems.length){
-      const indexOfCurrentItem = getCartItems.findIndex(item=>item.productId === getCurrentProductId)
-      if(indexOfCurrentItem !== -1){
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem !== -1) {
         const currentQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if((currentQuantity+1)>getTotalStock){
+        if (currentQuantity + 1 > getTotalStock) {
           toast({
             title: `Only ${currentQuantity} items are available in stock`,
-            variant : 'destructive'
-          })
+            variant: "destructive",
+          });
           return;
         }
       }
@@ -52,7 +54,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         dispatch(fetchCartItems(user?.id));
         toast({
           title: `Product added to cart successfully`,
-        })
+        });
       }
     });
   }
@@ -63,25 +65,36 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setRating(0);
     setReviewMsg("");
   }
-  function handleAddReview(){
-    dispatch(addReview({ productId : productDetails?._id, userId : user?.id, userName: user?.userName, reviewMessage : reviewMsg , reviewValue : rating }))
-    .then((data)=>{
-      console.log(data);
-      if(data?.payload?.success){
+  function handleAddReview() {
+    dispatch(
+      addReview({
+        productId: productDetails?._id,
+        userId: user?.id,
+        userName: user?.userName,
+        reviewMessage: reviewMsg,
+        reviewValue: rating,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
         setRating(0);
-        setReviewMsg('');
-        dispatch(getReviews(productDetails?._id))
+        setReviewMsg("");
+        dispatch(getReviews(productDetails?._id));
         toast({
-          title: data?.payload?.message
-        })
+          title: data?.payload?.message,
+        });
+      }else{
+        toast({
+          title: "Something went wrong (Product not delivered yet or Review already added)",
+          variant: "destructive",
+        });
       }
     })
-  } 
-  useEffect(()=>{
-    if(productDetails!==null){
+  }
+  useEffect(() => {
+    if (productDetails !== null) {
       dispatch(getReviews(productDetails?._id));
     }
-  },[productDetails])
+  }, [productDetails]);
 
   const averageReview =
     reviews && reviews.length > 0
@@ -168,7 +181,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                       <div className="flex items-center gap-0.5">
                         <StarRatingComponent rating={reviewItem?.reviewValue} />
                       </div>
-                      <p className="text-muted-foreground">
+                      <p className="text-foreground">
                         {reviewItem?.reviewMessage}
                       </p>
                     </div>

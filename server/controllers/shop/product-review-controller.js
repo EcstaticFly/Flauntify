@@ -9,7 +9,7 @@ const addProductReview = async (req, res) => {
     const order = await Order.findOne({
       userId,
       "cartItems.productId": productId,
-      orderStatus: "confirmed",
+      orderStatus: "delivered", //can add review only after product delivered
     });
 
     if (!order) {
@@ -67,7 +67,7 @@ const getProductReviews = async (req, res) => {
       data: reviews,
     });
   } catch (error) {
-    console.error(error, message);
+    console.error(error.message);
     res
       .status(500)
       .json({ success: false, message: "Error fetching product reviews" });
