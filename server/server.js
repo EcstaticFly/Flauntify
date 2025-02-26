@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
@@ -14,8 +14,8 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
-const connectDB =require('./helpers/mongodb')
-dotenv.config({ path: './.env' });
+const connectDB = require("./helpers/mongodb");
+dotenv.config({ path: "./.env" });
 connectDB();
 
 const app = express();

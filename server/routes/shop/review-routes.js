@@ -2,7 +2,7 @@ const express = require("express");
 
 const {
   addProductReview,
-  getProductReviews
+  getProductReviews,
 } = require("../../controllers/shop/product-review-controller");
 
 const router = express.Router();

@@ -5,7 +5,7 @@ const User = require("../../models/User");
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
-  console.log(email)
+  console.log(email);
   try {
     const checkUser = await User.findOne({ email });
     if (checkUser)
@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
     await newUser.save();
     res.status(200).json({
       success: true,
-      message: "Registration successful",
+      message: "Registration successful! Please login to continue",
     });
   } catch (e) {
     console.log(e);

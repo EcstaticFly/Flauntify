@@ -17,16 +17,52 @@ function AuthRegister() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function onSubmit(event) {
+  function validateEmailDomain(email) {
+    const gmailRegex = /^[^@]+@gmail\.com$/;
+
+    const yahooRegex = /^[^@]+@yahoo\.com$/;
+
+    return gmailRegex.test(email) || yahooRegex.test(email);
+  }
+
+  const isFormValid = async () => {
+    if (!formData.userName.trim()) {
+      toast.error("Please enter username");
+      return false;
+    }
+    if (!formData.email.trim()) {
+      toast.error("Please enter email");
+      return false;
+    }
+    if (!formData.password.trim()) {
+      toast.error("Please enter password");
+      return false;
+    }
+    if (formData.password.trim().length < 6) {
+      toast.error("Password must have at least 6 characters");
+      return false;
+    }
+    if (!validateEmailDomain(formData.email)) {
+      toast.error("Only Gmail and Yahoo domains allowed");
+      return false;
+    }
+
+    return true;
+  };
+
+  async function onSubmit(event) {
     event.preventDefault();
-    dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload?.success) {
-        toast.success(data?.payload?.message)
-        navigate("/auth/login");
-      } else {
-        toast.error(data?.payload?.message);
-      }
-    });
+    const isValid = await isFormValid();
+    if (isValid) {
+      dispatch(registerUser(formData)).then((data) => {
+        if (data?.payload?.success) {
+          toast.success(data?.payload?.message);
+          navigate("/auth/login");
+        } else {
+          toast.error(data?.payload?.message);
+        }
+      });
+    }
   }
 
   console.log(formData);
@@ -38,9 +74,9 @@ function AuthRegister() {
           Create new account
         </h1>
         <p className="mt-2">
-          Already have an account
+          Already have an account?
           <Link
-            className="font-medium ml-2 text-primary hover:underline"
+            className="font-medium ml-1 text-blue-600 hover:underline"
             to="/auth/login"
           >
             Login

@@ -45,7 +45,7 @@ const brandsWithIcon = [
 ];
 
 function ShoppingHome() {
-  const [currentSlide,setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
@@ -93,10 +93,10 @@ function ShoppingHome() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide(prevSlide=> (prevSlide+1)%featureImageList.length);
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length);
     }, 6000);
 
-    return ()=> clearInterval(timer)
+    return () => clearInterval(timer);
   }, [featureImageList]);
 
   useEffect(() => {

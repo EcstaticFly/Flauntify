@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <App />
       <ToastContainer
-        autoClose={3000}
+        autoClose={4000}
         hideProgressBar={true}
         position="bottom-right"
         theme="dark"
