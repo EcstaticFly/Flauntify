@@ -63,13 +63,14 @@ PAYPAL_CLIENT_SECRET = your_paypal_client_secret
 4️⃣ **Run the app:**  
 ```bash
 # Start backend
+cd server
 npm run start  
 
 # Start frontend
 cd client
 npm run start
 ```
-5️⃣ **The app will be live at http://localhost:3000** 
+5️⃣ **The app will be live at http://localhost:5173** 
 
 ## 🤝 Contributing  
 Contributions, issues, and feature requests are welcome!  
