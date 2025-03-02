@@ -21,7 +21,6 @@
     "mongoose": "^8.5.3",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.4",
-    "paypal-rest-sdk": "^1.8.1",
-    "razorpay": "^2.9.5"
+    "paypal-rest-sdk": "^1.8.1"
   }
 }
