@@ -12,7 +12,11 @@ function AuthLayout() {
           <span className="text-xl font-normal tracking-tight">Shop Smart, Live Stylish.</span>
         </div>
       </div>
-      <div className="flex flex-1 items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="flex flex-1 flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="flex mb-4 items-center space-x-2 [@media(max-width:160px)]:flex-col">
+      <img src="/Flauntify-logo.svg" alt="Flauntify Logo" className="size-10" />
+      <span className="font-semibold italic text-xl underline">Flauntify</span>
+      </div>
         <Outlet />
       </div>
     </div>
