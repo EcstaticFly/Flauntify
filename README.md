@@ -1,7 +1,7 @@
 # Flauntify – E-commerce Website  
 A full-stack e-commerce platform built with the MERN stack, featuring product management, PayPal integration, shopping cart, and order tracking.
 
-🔗 **Live Site:** [Flauntify](https://flauntify.vercel.app/)  
+🔗 **Live Site:** [Flauntify](https://flauntify.onrender.com/)  
 📂 **Repository:** [GitHub](https://github.com/EcstaticFly/Flauntify.git)
 
 ## ✨ Features  
